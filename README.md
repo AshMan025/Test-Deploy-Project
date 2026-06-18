@@ -102,6 +102,35 @@ Open [http://localhost:5173](http://localhost:5173).
 
 CORS is pre-configured for `http://localhost:5173`. For production, set `CORS_ORIGINS` on the backend to your frontend URL (comma-separated).
 
+## Deploying to Render
+
+1. Push the repo to GitHub.
+2. On Render: **New → Web Service** → connect the repo.
+3. Set **Root Directory** to `backend` (or use the included `render.yaml` Blueprint).
+4. **Build command:** `pip install -r requirements.txt`
+5. **Start command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+6. Add environment variables:
+   - `DATABASE_URL` — Supabase **Session pooler** connection URI
+   - `CORS_ORIGINS` — your frontend URL (after Vercel deploy)
+
+### Render startup troubleshooting
+
+If the build succeeds but the service crashes on startup, open **Logs** in Render and look for the traceback. Common causes:
+
+| Error in logs | Fix |
+|---------------|-----|
+| `No module named 'app'` | Root Directory must be `backend`, not the repo root |
+| `SSL connection required` / `sslmode` | Use Session pooler URI from Supabase; the app adds `sslmode=require` automatically |
+| `password authentication failed` | Re-copy `DATABASE_URL`; URL-encode special characters in the password |
+| `could not connect to server` | Use Supabase **Session pooler** (port 5432), not Direct connection (IPv6-only on free tier) |
+| `ModuleNotFoundError: psycopg2` | Ensure `psycopg2-binary` is in `requirements.txt` (already included) |
+
+Test after deploy:
+
+```bash
+curl https://YOUR-SERVICE.onrender.com/api/health
+```
+
 ## Production notes
 
 - **Backend:** Deploy `backend/` to any Python host (Render, Railway, Fly.io, etc.). Set `DATABASE_URL` to your Supabase connection string.
