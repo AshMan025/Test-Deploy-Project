@@ -122,7 +122,7 @@ If the build succeeds but the service crashes on startup, open **Logs** in Rende
 | `No module named 'app'` | Root Directory must be `backend`, not the repo root |
 | `SSL connection required` / `sslmode` | Use Session pooler URI from Supabase; the app adds `sslmode=require` automatically |
 | `password authentication failed` | Re-copy `DATABASE_URL`; URL-encode special characters in the password |
-| `could not connect to server` | Use Supabase **Session pooler** (port 5432), not Direct connection (IPv6-only on free tier) |
+| `could not connect to server` / `Network is unreachable` | You are using Supabase **Direct** connection (`db.*.supabase.co`). Render free tier cannot reach it (IPv6). Switch to **Session pooler** URI (`.pooler.supabase.com`) |
 | `ModuleNotFoundError: psycopg2` | Ensure `psycopg2-binary` is in `requirements.txt` (already included) |
 
 Test after deploy:

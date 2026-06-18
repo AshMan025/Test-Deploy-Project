@@ -69,6 +69,14 @@ def create_engine_with_fallback():
             last_error = exc
 
     if last_error is not None:
+        message = str(last_error)
+        if "Network is unreachable" in message and "supabase.co" in (raw_url or ""):
+            raise RuntimeError(
+                "Cannot connect to Supabase using the Direct connection URL "
+                "(db.*.supabase.co uses IPv6). On Render, use the Session pooler "
+                "URI from Supabase: Settings → Database → Connection string → "
+                "URI → Session mode (host ends with .pooler.supabase.com)."
+            ) from last_error
         raise last_error
     raise RuntimeError("Failed to create database engine.")
 
