@@ -11,8 +11,12 @@ venv/
 node_modules/
 dist/
 .env.local
+backend/memory_wall.db
+
 
 # IDE / OS
 .DS_Store
 .idea/
 .vscode/
+
+
