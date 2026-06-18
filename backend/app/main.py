@@ -39,7 +39,11 @@ def list_memories(db: Session = Depends(get_db)):
 
 @app.post("/api/memories", response_model=MemoryRead, status_code=201)
 def create_memory(payload: MemoryCreate, db: Session = Depends(get_db)):
-    memory = Memory(name=payload.name.strip(), message=payload.message.strip())
+    memory = Memory(
+        title=payload.title.strip(),
+        name=payload.name.strip(),
+        message=payload.message.strip(),
+    )
     db.add(memory)
     db.commit()
     db.refresh(memory)

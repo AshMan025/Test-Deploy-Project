@@ -10,6 +10,7 @@ class Memory(Base):
     __tablename__ = "memories" # DB name 
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    title: Mapped[str] = mapped_column(String(100), nullable=False, server_default="Untitled")
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     message: Mapped[str] = mapped_column(Text, nullable=False)
     created_at: Mapped[datetime] = mapped_column(

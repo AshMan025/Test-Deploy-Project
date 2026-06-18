@@ -24,11 +24,11 @@ export async function fetchMemories() {
   return handleResponse(response)
 }
 
-export async function createMemory({ name, message }) {
+export async function createMemory({ title, name, message }) {
   const response = await fetch(`${API_BASE_URL}/api/memories`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, message }),
+    body: JSON.stringify({ title, name, message }),
   })
   return handleResponse(response)
 }
